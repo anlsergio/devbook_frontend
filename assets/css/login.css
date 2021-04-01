@@ -84,4 +84,5 @@ input::placeholder {
 
 .btn-devbook:hover{
   cursor: pointer;
+  background-color: #496196;
 }
