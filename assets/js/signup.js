@@ -18,7 +18,7 @@ function createUser(event) {
       password: $('#password').val(),
     }
   }).done(function () {
-    alert("Welcome aboard " + $('#username') + "!");
+    alert("Welcome aboard!");
   }).fail(function (error) {
     console.log(error);
     alert("Something went wrong. Please try again.");
