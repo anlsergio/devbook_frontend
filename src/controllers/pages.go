@@ -14,3 +14,8 @@ func RenderLoginPage(w http.ResponseWriter, r *http.Request) {
 func RenderSignupPage(w http.ResponseWriter, r *http.Request) {
 	utils.RenderTemplate(w, "signup.html", nil)
 }
+
+// RenderHomePage - renders the home page listing user posts (feed)
+func RenderHomePage(w http.ResponseWriter, r *http.Request) {
+	utils.RenderTemplate(w, "home.html", nil)
+}

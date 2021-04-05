@@ -18,4 +18,10 @@ var loginRoutes = []Route{
 		Function: controllers.RenderLoginPage,
 		RequiresAuth: false,
 	},
+	{
+		URI:    "/login",
+		Method: http.MethodPost,
+		Function: controllers.Login,
+		RequiresAuth: false,
+	},
 }
