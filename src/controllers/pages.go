@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"webapp/src/config"
+	"webapp/src/models"
 	"webapp/src/requests"
 	"webapp/src/responses"
 	"webapp/src/utils"
@@ -34,5 +36,11 @@ func RenderHomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.RenderTemplate(w, "home.html", nil)
+	var posts []models.Post
+	if err := json.NewDecoder(response.Body).Decode(&posts); err != nil {
+		responses.JSON(w, http.StatusUnprocessableEntity, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	utils.RenderTemplate(w, "home.html", posts)
 }

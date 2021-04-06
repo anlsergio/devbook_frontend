@@ -10,6 +10,11 @@
 
 <body>
   <h2>This is the home page!</h2>
-</body>
+  {{ range . }}
+    <h4> {{ .Title }} </h4>
+    <h4> {{ .Content }} </h4>
 
+    <hr />
+  {{ end }}
+</body>
 </html>
