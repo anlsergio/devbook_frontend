@@ -35,14 +35,12 @@
         </fieldset>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
-        {{ range . }}
-        <div class="jumbotron">
-          <h1 class="display-4">{{ .Title }} </h1>
-          <p class="lead">{{ .Content }}</p>
-          <hr class="my-4">
-          <a href="#"> {{ .AuthorUsername }} - {{ .CreatedAt }} </a>
-          <p>Buttons</p>
-        </div>
+        {{ range .Posts }}
+          {{ if (eq .AuthorID $.UserID) }}
+            {{ template "post-with-permissions" . }}
+          {{ else }}
+            {{ template "post-without-permissions" . }}
+          {{ end }}
         {{ end }}
       </div>
     </div>

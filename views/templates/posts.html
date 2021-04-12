@@ -1,0 +1,40 @@
+{{ define "likes" }}
+ <span> {{ .Likes }} {{ if eq .Likes 1 }} like {{ else }} likes {{ end }} </span>
+{{ end }}
+
+{{ define "edit" }}
+<a href="/edit">Edit</a>
+{{ end }}
+
+{{ define "delete" }}
+<a href="/delete">Delete</a>
+{{ end }}
+
+{{ define "post-header" }}
+  <h1 class="display-4">{{ .Title }} </h1>
+  <p class="lead">{{ .Content }}</p>
+  <hr class="my-4">
+  <p>
+    posted {{ .CreatedAt.Format "Jan, 2 '06 at 3:4" }} by <a href="#"> {{ .AuthorUsername }} </a>
+  </p>
+{{ end }}
+
+{{ define "post-with-permissions" }}
+  <div class="jumbotron" data-post-id="{{ .ID }}">
+    {{ template "post-header" . }}
+    <p>
+      {{ template "likes" . }}
+      {{ template "edit"}}
+      {{ template "delete"}}
+    </p>
+  </div>
+{{ end }}
+
+{{ define "post-without-permissions" }}
+  <div class="jumbotron" data-post-id="{{ .ID }}">
+    {{ template "post-header" . }}
+    <p>
+      {{ template "likes" . }}
+    </p>
+  </div>
+{{ end }}
