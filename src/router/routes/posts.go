@@ -1,12 +1,21 @@
 package routes
 
-import "webapp/src/controllers"
+import (
+	"net/http"
+	"webapp/src/controllers"
+)
 
 var postsRoutes = []Route {
 	{
 		URI:    "/posts",
-		Method: "POST",
+		Method: http.MethodPost,
 		Function: controllers.CreatePost,
+		RequiresAuth: true,
+	},
+	{
+		URI:    "/posts/{postID}/like",
+		Method: http.MethodPost,
+		Function: controllers.LikePost,
 		RequiresAuth: true,
 	},
 }

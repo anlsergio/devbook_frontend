@@ -1,5 +1,5 @@
 {{ define "likes" }}
-<i class="far fa-heart"></i>
+<i class="{{ if gt .Likes 0 }} fas {{ else }} far {{ end }} fa-heart like-post"></i>
  <span> {{ .Likes }} {{ if eq .Likes 1 }} like {{ else }} likes {{ end }} </span>
 {{ end }}
 
