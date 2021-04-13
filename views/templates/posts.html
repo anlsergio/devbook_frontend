@@ -1,13 +1,18 @@
 {{ define "likes" }}
+<i class="far fa-heart"></i>
  <span> {{ .Likes }} {{ if eq .Likes 1 }} like {{ else }} likes {{ end }} </span>
 {{ end }}
 
 {{ define "edit" }}
-<a href="/edit">Edit</a>
+<a href="/edit" style="text-decoration: none;">
+  <i class="far fa-edit"></i>
+</a>
 {{ end }}
 
 {{ define "delete" }}
-<a href="/delete">Delete</a>
+<a href="/delete" style="text-decoration: none;">
+  <i class="far fa-trash-alt text-danger"></i>
+</a>
 {{ end }}
 
 {{ define "post-header" }}
@@ -24,6 +29,8 @@
     {{ template "post-header" . }}
     <p>
       {{ template "likes" . }}
+    </p>
+    <p class="mt-4">
       {{ template "edit"}}
       {{ template "delete"}}
     </p>
