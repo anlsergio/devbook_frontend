@@ -4,7 +4,7 @@
 {{ end }}
 
 {{ define "edit" }}
-<a href="/edit" style="text-decoration: none;">
+<a href="/posts/{{ .ID }}/edit" style="text-decoration: none;">
   <i class="far fa-edit"></i>
 </a>
 {{ end }}
@@ -31,8 +31,8 @@
       {{ template "likes" . }}
     </p>
     <p class="mt-4">
-      {{ template "edit"}}
-      {{ template "delete"}}
+      {{ template "edit" . }}
+      {{ template "delete" . }}
     </p>
   </div>
 {{ end }}

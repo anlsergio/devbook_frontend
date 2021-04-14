@@ -24,4 +24,10 @@ var postsRoutes = []Route {
 		Function: controllers.DislikePost,
 		RequiresAuth: true,
 	},
+	{
+		URI:    "/posts/{postID}/edit",
+		Method: http.MethodGet,
+		Function: controllers.RenderEditPostPage,
+		RequiresAuth: true,
+	},
 }
