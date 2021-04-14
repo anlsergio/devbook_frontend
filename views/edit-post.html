@@ -26,7 +26,7 @@
             placeholder="What's on your mind?" rows="8">{{ .Content }}</textarea>
         </div>
         <button id="update-post" class="btn btn-info" data-post-id="{{ .ID }}">
-          Update Post
+          Save Changes
         </button>
       </div>
     </div>
@@ -34,6 +34,8 @@
 
   {{ template "footer" }}
   {{ template "scripts" }}
+
+  <script src="/assets/js/posts.js"></script>
 
 </body>
 
