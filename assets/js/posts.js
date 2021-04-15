@@ -4,6 +4,7 @@ $(document).on('click', '.like-post', likePost)
 $(document).on('click', '.dislike-post', dislikePost)
 
 $('#update-post').on('click', updatePost);
+$('.delete-post').on('click', deletePost);
 
 function createPost(event) {
   event.preventDefault();
@@ -109,4 +110,36 @@ function updatePost() {
   }).always(function () {
     $('#update-post').prop('disabled', false);
   });
+}
+
+function deletePost(event) {
+  event.preventDefault();
+
+  Swal.fire({
+    title: 'Confirmation',
+    text: 'Are you sure you want to delete this post?',
+    showCancelButton: true,
+    cancelButtonText: 'No, take me back!',
+    icon: 'warning'
+  }).then(function (confirmation) {
+    if (!confirmation.value) return;
+
+    const clickedElement = $(event.target);
+    const post = clickedElement.closest('div');
+    const postID = post.data('post-id');
+
+    clickedElement.prop('disabled', true);
+
+    $.ajax({
+      url: `/posts/${postID}`,
+      method: "DELETE"
+    }).done(function () {
+      post.fadeOut("slow", function () {
+        $(this).remove();
+      });
+    }).fail(function () {
+      alert("Something went wrong while trying to delete the post")
+    });
+  })
+
 }

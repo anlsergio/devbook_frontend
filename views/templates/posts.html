@@ -1,5 +1,5 @@
 {{ define "likes" }}
-<i class="far fa-heart like-post"></i>
+<i class="far fa-heart like-post" style="cursor: pointer;"></i>
  <span> {{ .Likes }} {{ if eq .Likes 1 }} like {{ else }} likes {{ end }} </span>
 {{ end }}
 
@@ -10,9 +10,7 @@
 {{ end }}
 
 {{ define "delete" }}
-<a href="/delete" style="text-decoration: none;">
-  <i class="far fa-trash-alt text-danger"></i>
-</a>
+<i class="far fa-trash-alt text-danger delete-post" style="cursor: pointer;"></i>
 {{ end }}
 
 {{ define "post-header" }}
