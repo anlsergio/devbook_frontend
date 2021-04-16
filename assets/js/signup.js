@@ -19,14 +19,31 @@ function createUser(event) {
       name: $('#name').val(),
       email: $('#email').val(),
       username: $('#username').val(),
-      password: $('#password').val(),
+      password: $('#password').val()
     }
   }).done(function () {
     Swal.fire(
       'Welcome aboard!',
       "You are now part of the best social media ever made!",
       'success'
-    )
+    ).then(function () {
+      $.ajax({
+        url: "/login",
+        method: "POST",
+        data: {
+          email: $('#email').val(),
+          password: $('#password').val()
+        }
+      }).done(function () {
+        window.location = "/home";
+      }).fail(function () {
+        Swal.fire(
+          'Oops...',
+          "Something went wrong while trying to log you in. Please try again later.",
+          'error'
+        )
+      });
+    })
   }).fail(function () {
     Swal.fire(
       'Oops...',
