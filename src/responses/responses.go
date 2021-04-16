@@ -2,7 +2,6 @@ package responses
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -29,5 +28,4 @@ func HandleErrorStatusCode(w http.ResponseWriter, r *http.Response) {
 	var error APIError
 	json.NewDecoder(r.Body).Decode(&error)
 	JSON(w, r.StatusCode, error)
-	fmt.Println("This is the error: ", error)
 }

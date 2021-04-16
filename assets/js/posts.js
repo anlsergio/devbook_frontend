@@ -17,9 +17,19 @@ function createPost(event) {
       content: $('#content').val(),
     }
   }).done(function () {
-    window.location = "/home";
+    Swal.fire(
+      'Yay!',
+      'Your new post has been submitted!',
+      'success'
+    ).then(function () {
+      window.location = "/home";
+    })
   }).fail(function () {
-    alert("Failed to submit post. Please try again.");
+    Swal.fire(
+      'Oops...',
+      "Failed to submit post. Please try again later.",
+      'error'
+    )
   })
 }
 
@@ -51,7 +61,11 @@ function likePost(event) {
     clickedElement[0].className = "fas fa-heart dislike-post text-danger";
 
   }).fail(function () {
-    alert("Something went wrong")
+    Swal.fire(
+      'Oops...',
+      "Something went wrong. Please try again later.",
+      'error'
+    )
   }).always(function () {
     clickedElement.prop('disabled', false);
   });
@@ -85,7 +99,11 @@ function dislikePost(event) {
     clickedElement[0].className = "far fa-heart like-post";
 
   }).fail(function () {
-    alert("Something went wrong")
+    Swal.fire(
+      'Oops...',
+      "Something went wrong. Please try again later.",
+      'error'
+    )
   }).always(function () {
     clickedElement.prop('disabled', false);
   });
@@ -104,9 +122,19 @@ function updatePost() {
       content: $('#content').val()
     }
   }).done(function () {
-    alert("Yay!")
+    Swal.fire(
+      'Done!',
+      'Your post has been updated!',
+      'success'
+    ).then(function () {
+      window.location = "/home";
+    })
   }).fail(function () {
-    alert("Something went wrong")
+    Swal.fire(
+      'Oops...',
+      "Something went wrong and your post couldn't be updated. Please try again later.",
+      'error'
+    )
   }).always(function () {
     $('#update-post').prop('disabled', false);
   });
@@ -138,7 +166,11 @@ function deletePost(event) {
         $(this).remove();
       });
     }).fail(function () {
-      alert("Something went wrong while trying to delete the post")
+      Swal.fire(
+        'Oops...',
+        "Something went wrong while trying to delete the post. Please try again later.",
+        'error'
+      )
     });
   })
 

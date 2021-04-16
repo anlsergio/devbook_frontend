@@ -13,6 +13,10 @@ function login(event) {
   }).done(function () {
     window.location = "/home";
   }).fail(function () {
-    alert("It doesn't seem right... Check your email or password and try again!")
+    Swal.fire(
+      "It doesn't seem right...",
+      "Please, check your email and password and try again!",
+      'error'
+    )
   })
 }
