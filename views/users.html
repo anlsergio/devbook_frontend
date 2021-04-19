@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devbook | Users</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+</head>
+
+<body>
+  {{ template "header" }}
+
+  <div class="container-fluid">
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Search for users on DevBook</h5>
+            {{ range . }}
+              <p class="card-text">
+                {{ .Name }} <a href="/users/{{ .ID }}">({{ .Username }})</a>
+              </p>
+              <p class="card-text">
+                Member since {{ .CreatedAt.Format "Jan, 2006" }}
+              </p>
+            {{ else }}
+              <p class="card-text">
+                No users have been found. Try a different search criteria.
+              </p>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ template "footer" }}
+  {{ template "scripts" }}
+</body>
+
+</html>

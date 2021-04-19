@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"webapp/src/config"
 	"webapp/src/cookies"
 	"webapp/src/models"
@@ -94,4 +95,31 @@ func RenderEditPostPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.RenderTemplate(w, "edit-post.html", post)
+}
+
+
+// RenderPageOfUsers - renders a new page containing a list of users who meet the query parameter
+func RenderPageOfUsers(w http.ResponseWriter, r *http.Request) {
+	nameOrUsername := strings.ToLower(r.URL.Query().Get("user"))
+
+	endpoint_URL := fmt.Sprintf("%s/users?user=%s", config.APIURL, nameOrUsername)
+	response, err := requests.RequestWithAuthentication(r, http.MethodGet, endpoint_URL, nil)
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleErrorStatusCode(w, response)
+		return
+	}
+
+	var users []models.User
+	if err = json.NewDecoder(response.Body).Decode(&users); err != nil {
+		responses.JSON(w, http.StatusUnprocessableEntity, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	utils.RenderTemplate(w, "users.html", users)
 }
