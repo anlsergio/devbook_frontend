@@ -17,14 +17,17 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Search for users on DevBook</h5>
             {{ range . }}
-              <p class="card-text">
-                {{ .Name }} <a href="/users/{{ .ID }}">({{ .Username }})</a>
-              </p>
-              <p class="card-text">
-                Member since {{ .CreatedAt.Format "Jan, 2006" }}
-              </p>
+              <h5 class="card-title">Search for users on DevBook</h5>
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ .Name }} <a href="/users/{{ .ID }}">({{ .Username }})</a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Member since {{ .CreatedAt.Format "Jan, 2006" }}
+                  </h6>
+                  </p>
+                </div>
+              </div>
             {{ else }}
               <p class="card-text">
                 No users have been found. Try a different search criteria.
