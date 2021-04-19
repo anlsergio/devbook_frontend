@@ -17,6 +17,13 @@ import (
 
 // RenderLoginPage - renders the login page in order to be loaded by the client's browser
 func RenderLoginPage(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Read(r)
+
+	if cookie["token"] != "" {
+		http.Redirect(w, r, "/home", http.StatusFound)
+		return
+	}
+
 	utils.RenderTemplate(w, "login.html", nil)
 }
 
