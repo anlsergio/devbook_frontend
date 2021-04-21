@@ -126,8 +126,8 @@ func RenderPageOfUsers(w http.ResponseWriter, r *http.Request) {
 	utils.RenderTemplate(w, "users.html", users)
 }
 
-// RenderMyProfile - renders the current user's profile page
-func RenderMyProfile(w http.ResponseWriter, r *http.Request) {
+// RenderUsersProfile - renders the current user's profile page
+func RenderUsersProfile(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	userID, err := strconv.ParseUint(params["userID"], 10, 64)
 	if err != nil {
@@ -142,7 +142,7 @@ func RenderMyProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cookie, _ := cookies.Read(r)
-	signedInUserID, _ := strconv.ParseUint(cookie["ID"], 10, 64)
+	signedInUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
 	utils.RenderTemplate(w, "user.html", struct{
 		User models.User
