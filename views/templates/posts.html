@@ -18,7 +18,7 @@
   <p class="lead">{{ .Content }}</p>
   <hr class="my-4">
   <p>
-    posted {{ .CreatedAt.Format "Jan, 2 '06 at 3:4" }} by <a href="#"> {{ .AuthorUsername }} </a>
+    posted {{ .CreatedAt.Format "Jan, 2 '06 at 3:4" }} by <a href="/users/{{ .AuthorID }}"> {{ .AuthorUsername }} </a>
   </p>
 {{ end }}
 

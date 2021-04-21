@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devbook | My Profile </title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+</head>
+
+<body>
+  {{ template "header" }}
+
+  <div class="container-fluid">
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ .Name }} ({{ .Username }})</a></h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Member since {{ .CreatedAt.Format "Jan, 2006" }}
+            </h6>
+
+            <p class="card-text">
+              <a href="#" data-toggle="modal" data-target="#followers-modal">
+                Followers: {{ len .Followers }}
+              </a>
+            </p>
+            <p class="card-text">
+              <a href="#" data-toggle="modal" data-target="#following-modal">
+                Following: {{ len .Following }}
+              </a>
+            </p>
+
+            <div class="row">
+              <div class="col-12">
+                <a href="/edit-user" class="card-link">
+                  <button class="btn btn-info">Edit Personal Information</button>
+                </a>
+                <a href="/update-password" class="card-link">
+                  <button class="btn btn-info">Change Password</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> My posts </h5>
+            <p class="card-text">
+              {{ range .Posts }}
+                {{ template "post-with-permissions" . }}
+              {{ else }}
+                <p class="text-muted text-center">
+                  This user has no activity to show yet...
+                </p>
+              {{ end }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ template "followers-modal" . }}
+  {{ template "following-modal" . }}
+
+  {{ template "footer" }}
+
+  {{ template "scripts" }}
+
+  <script src="/assets/js/posts.js"></script>
+</body>
+
+</html>

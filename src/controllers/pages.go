@@ -126,12 +126,20 @@ func RenderPageOfUsers(w http.ResponseWriter, r *http.Request) {
 	utils.RenderTemplate(w, "users.html", users)
 }
 
-// RenderUsersProfile - renders the current user's profile page
+// RenderUsersProfile - renders a given user's profile page
 func RenderUsersProfile(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	userID, err := strconv.ParseUint(params["userID"], 10, 64)
 	if err != nil {
 		responses.JSON(w, http.StatusBadRequest, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	cookie, _ := cookies.Read(r)
+	signedInUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	if userID == signedInUserID {
+		http.Redirect(w, r, "/profile", http.StatusFound)
 		return
 	}
 
@@ -141,8 +149,6 @@ func RenderUsersProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie, _ := cookies.Read(r)
-	signedInUserID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
 	utils.RenderTemplate(w, "user.html", struct{
 		User models.User
@@ -151,4 +157,18 @@ func RenderUsersProfile(w http.ResponseWriter, r *http.Request) {
 		User: user,
 		SignedInUserID: signedInUserID,
 	})
+}
+
+// RenderSignedInUserProfile - renders the current signed in user's profile
+func RenderSignedInUserProfile(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Read(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	user, err := models.GetFullUserProfile(userID, r)
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	utils.RenderTemplate(w, "profile.html", user)
 }
