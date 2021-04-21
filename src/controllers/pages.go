@@ -20,6 +20,8 @@ import (
 func RenderLoginPage(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Read(r)
 
+	println(cookie)
+
 	if cookie["token"] != "" {
 		http.Redirect(w, r, "/home", http.StatusFound)
 		return
@@ -122,4 +124,31 @@ func RenderPageOfUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.RenderTemplate(w, "users.html", users)
+}
+
+// RenderMyProfile - renders the current user's profile page
+func RenderMyProfile(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	if err != nil {
+		responses.JSON(w, http.StatusBadRequest, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	user, err := models.GetFullUserProfile(userID, r)
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	cookie, _ := cookies.Read(r)
+	signedInUserID, _ := strconv.ParseUint(cookie["ID"], 10, 64)
+
+	utils.RenderTemplate(w, "user.html", struct{
+		User models.User
+		SignedInUserID uint64
+	}{
+		User: user,
+		SignedInUserID: signedInUserID,
+	})
 }
