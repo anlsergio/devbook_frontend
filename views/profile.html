@@ -66,6 +66,21 @@
         </div>
       </div>
     </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card border-danger">
+          <div class="card-body">
+            <h5 class="card-title text-danger font-weight-bold mb-4">Danger Zone</h5>
+            <a id="delete-user" class="card-link">
+              <button class="btn btn-danger">
+                Delete Account
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   {{ template "followers-modal" . }}
@@ -76,6 +91,7 @@
   {{ template "scripts" }}
 
   <script src="/assets/js/posts.js"></script>
+  <script src="/assets/js/user.js"></script>
 </body>
 
 </html>

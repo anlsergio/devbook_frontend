@@ -188,3 +188,8 @@ func RenderEditUserPage(w http.ResponseWriter, r *http.Request) {
 	utils.RenderTemplate(w, "edit-user.html", user)
 	
 }
+
+// RenderUpdatePasswordPage - renders the update user's password page
+func RenderUpdatePasswordPage(w http.ResponseWriter, r *http.Request) {
+	utils.RenderTemplate(w, "update-password.html", nil)
+}

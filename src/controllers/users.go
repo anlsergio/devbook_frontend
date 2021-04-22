@@ -129,3 +129,57 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	responses.JSON(w, response.StatusCode, nil)
 }
+
+// UpdatePassword - calls the API's endpoint in order to update a user's password
+func UpdatePassword(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	passwordJSON, err := json.Marshal(map[string]string{
+		"current": r.FormValue("current"),
+		"new": r.FormValue("new"),
+	})
+
+	if err != nil {
+		responses.JSON(w, http.StatusBadRequest, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	cookie, _ := cookies.Read(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	endpoint_URL := fmt.Sprintf("%s/users/%d/update-password", config.APIURL, userID)
+	response, err := requests.RequestWithAuthentication(r, http.MethodPost, endpoint_URL, bytes.NewBuffer(passwordJSON))
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleErrorStatusCode(w, response)
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
+
+// DeleteUser - calls the API's endpoint in order to delete a user's account completely
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Read(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	endpoint_URL := fmt.Sprintf("%s/users/%d", config.APIURL, userID)
+	response, err := requests.RequestWithAuthentication(r, http.MethodDelete, endpoint_URL, nil)
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleErrorStatusCode(w, response)
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
