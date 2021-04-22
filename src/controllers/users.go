@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"webapp/src/config"
+	"webapp/src/cookies"
 	"webapp/src/requests"
 	"webapp/src/responses"
 
@@ -81,6 +82,40 @@ func UnfollowUser(w http.ResponseWriter, r *http.Request) {
 
 	endpoint_URL := fmt.Sprintf("%s/users/%d/unfollow", config.APIURL, userID)
 	response, err := requests.RequestWithAuthentication(r, http.MethodDelete, endpoint_URL, nil)
+	if err != nil {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		responses.HandleErrorStatusCode(w, response)
+		return
+	}
+
+	responses.JSON(w, response.StatusCode, nil)
+}
+
+// UpdateUser - calls the API's endpoint in order to update a user's personal information
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	user, err := json.Marshal(map[string]string{
+		"name": r.FormValue("name"),
+		"email": r.FormValue("email"),
+		"username": r.FormValue("username"),
+	})
+
+	if err != nil {
+		responses.JSON(w, http.StatusBadRequest, responses.APIError{Error: err.Error()})
+		return
+	}
+
+	cookie, _ := cookies.Read(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	endpoint_URL := fmt.Sprintf("%s/users/%d", config.APIURL, userID)
+	response, err := requests.RequestWithAuthentication(r, http.MethodPut, endpoint_URL, bytes.NewBuffer(user))
 	if err != nil {
 		responses.JSON(w, http.StatusInternalServerError, responses.APIError{Error: err.Error()})
 		return

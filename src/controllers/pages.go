@@ -60,10 +60,10 @@ func RenderHomePage(w http.ResponseWriter, r *http.Request) {
 	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
 	utils.RenderTemplate(w, "home.html", struct {
-		Posts []models.Post
+		Posts  []models.Post
 		UserID uint64
 	}{
-		Posts: posts,
+		Posts:  posts,
 		UserID: userID,
 	})
 }
@@ -98,7 +98,6 @@ func RenderEditPostPage(w http.ResponseWriter, r *http.Request) {
 
 	utils.RenderTemplate(w, "edit-post.html", post)
 }
-
 
 // RenderPageOfUsers - renders a new page containing a list of users who meet the query parameter
 func RenderPageOfUsers(w http.ResponseWriter, r *http.Request) {
@@ -149,12 +148,11 @@ func RenderUsersProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
-	utils.RenderTemplate(w, "user.html", struct{
-		User models.User
+	utils.RenderTemplate(w, "user.html", struct {
+		User           models.User
 		SignedInUserID uint64
 	}{
-		User: user,
+		User:           user,
 		SignedInUserID: signedInUserID,
 	})
 }
@@ -171,4 +169,22 @@ func RenderSignedInUserProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.RenderTemplate(w, "profile.html", user)
+}
+
+// RenderEditUserPage - renders the edit user's information page
+func RenderEditUserPage(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Read(r)
+	userID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	c := make(chan models.User)
+	go models.FetchUserDataByUserID(c, userID, r)
+	user := <-c
+
+	if user.ID == 0 {
+		responses.JSON(w, http.StatusInternalServerError, responses.APIError{ Error: "Something went wrong while trying to fetch user data"})
+		return
+	}
+
+	utils.RenderTemplate(w, "edit-user.html", user)
+	
 }

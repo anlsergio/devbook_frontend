@@ -1,5 +1,6 @@
 $('#follow').on('click', follow);
 $('#unfollow').on('click', unfollow);
+$('#edit-user').on('submit', update);
 
 function follow() {
   const userID = $(this).data('user-id');
@@ -8,9 +9,9 @@ function follow() {
   $.ajax({
     url: `/users/${userID}/follow`,
     method: "POST"
-  }).done(function() {
+  }).done(function () {
     window.location = `/users/${userID}`;
-  }).fail(function() {
+  }).fail(function () {
     Swal.fire(
       'Oops...',
       "Something went wrong. Please try again later.",
@@ -27,9 +28,9 @@ function unfollow() {
   $.ajax({
     url: `/users/${userID}/unfollow`,
     method: "DELETE"
-  }).done(function() {
+  }).done(function () {
     window.location = `/users/${userID}`;
-  }).fail(function() {
+  }).fail(function () {
     Swal.fire(
       'Oops...',
       "Something went wrong. Please try again later.",
@@ -37,4 +38,32 @@ function unfollow() {
     );
     $(this).prop('disabled', false);
   });
+}
+
+function update(event) {
+  event.preventDefault();
+
+  $.ajax({
+    url: "update-user",
+    method: "PUT",
+    data: {
+      name: $('#name').val(),
+      email: $('#email').val(),
+      username: $('#username').val(),
+    }
+  }).done(function () {
+    Swal.fire(
+      "Alright!",
+      "You've successfuly updated your personal information",
+      "success"
+    ).then(function () {
+      window.location = "/profile";
+    })
+  }).fail(function () {
+    Swal.fire(
+      'Oops...',
+      "Something went wrong. Please try again later.",
+      'error'
+    );
+  })
 }
